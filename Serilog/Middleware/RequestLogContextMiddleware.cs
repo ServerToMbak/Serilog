@@ -13,11 +13,11 @@ namespace Serilogg.Middleware
             _next = next;
         }
         
-        public Task InvokeAsync(HttpContent context)
+        public Task InvokeAsync(HttpContext context)
         {
-            using(LogContext.PushProperty("CorrelationId", context.ToString()))
+            using(LogContext.PushProperty("CorrelationId", context.TraceIdentifier))
             {
-                return _next(context);
+                return _next(context); ;
             }
         }
     }

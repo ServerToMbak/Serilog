@@ -1,4 +1,5 @@
 using Serilog;
+using Serilogg.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Host.UseSerilog((context, loggerConfig) =>
-            loggerConfig.ReadFrom.Configuration(context.Configuration));
+builder.Services.AddSerilog();
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Debug(Serilog.Events.LogEventLevel.Information)
+    .WriteTo.Console()
+    .WriteTo.File("logs.txt")
+    .CreateLogger();
 
-Log.Error("Hello World");
+//builder.Services.AddLogging();
+
+//builder.Logging.ClearProviders().SetMinimumLevel(LogLevel.Information)/*.AddDebug()*/.AddConsole().AddProvider(new MyCusgtomLoggerFactory());
 
 var app = builder.Build();
 
@@ -26,8 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//app.UseMiddleware<RequestLogContextMiddleware>();
 
-app.UseSerilogRequestLogging();
 app.UseAuthorization();
 
 app.MapControllers();

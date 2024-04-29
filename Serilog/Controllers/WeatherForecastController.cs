@@ -21,6 +21,12 @@ namespace Serilog.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.LogDebug("Debug Log message");
+            _logger.LogInformation("Information Log message");
+            _logger.LogError("Error Log message");
+            _logger.LogWarning("Warning Log message");
+            _logger.LogTrace("Warning Log message");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -28,6 +34,7 @@ namespace Serilog.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
         }
     }
 }
