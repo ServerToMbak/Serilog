@@ -1,5 +1,4 @@
 using Serilog;
-using Serilogg.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
